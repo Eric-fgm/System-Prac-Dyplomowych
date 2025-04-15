@@ -1,0 +1,58 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Byte-compiled / cache / logs
+*.log
+*.pot
+*.mo
+
+# Environment
+venv/
+env/
+ENV/
+.venv/
+.python-version
+
+# Packages
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+sdist/
+wheels/
+pip-wheel-metadata/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# IDEs / Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MyPy / Static Analysis
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# Environment variables
+.env
+.env.*
+
+# Databases / SQLite
+*.sqlite3
+*.db
+
+# Misc
+.DS_Store
