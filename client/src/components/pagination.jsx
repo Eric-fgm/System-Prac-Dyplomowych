@@ -82,7 +82,7 @@ const PaginationEllipsis = ({ className, ...props }) => (
 );
 PaginationEllipsis.displayName = "PaginationEllipsis";
 
-const Pagination = ({ totalPages = 10, ...props }) => {
+const Pagination = ({ totalPages = 2, ...props }) => {
   const { pathname, search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const currentPage = parseInt(searchParams.get("page") ?? "1", 10);
@@ -139,12 +139,17 @@ const Pagination = ({ totalPages = 10, ...props }) => {
         </PaginationItem>
         {generatePagination().map((page) =>
           page < 0 ? (
-            <PaginationItem key={page}>
+            <PaginationItem key={page} className="hidden sm:block">
               <PaginationEllipsis />
             </PaginationItem>
           ) : (
-            <PaginationItem key={page}>
-              <PaginationLink to={getLink(page)}>{page}</PaginationLink>
+            <PaginationItem key={page} className="hidden sm:block">
+              <PaginationLink
+                to={getLink(page)}
+                isActive={page === currentPage}
+              >
+                {page}
+              </PaginationLink>
             </PaginationItem>
           )
         )}
