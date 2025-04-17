@@ -5,10 +5,16 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import Login from "./routes/Login";
-import Theses from "./routes/theses";
+import LoginPage from "./routes/Login";
+import ThesesPage from "./routes/theses";
 
 const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
   queryCache: new QueryCache({
     onError: () => {},
   }),
@@ -20,11 +26,11 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Theses />,
+    element: <ThesesPage />,
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <LoginPage />,
   },
 ]);
 

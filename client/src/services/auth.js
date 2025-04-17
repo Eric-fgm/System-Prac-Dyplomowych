@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 
 const login = async (credentials) => {
-  const response = await fetch("/api/auth/login", {
+  const response = await fetch("http://localhost:3000/api/auth/login", {
     method: "POST",
     body: JSON.stringify(credentials),
     headers: {
@@ -18,7 +18,7 @@ const login = async (credentials) => {
 };
 
 const fetchMe = async () => {
-  const response = await fetch("/api/auth/me");
+  const response = await fetch("http://localhost:3000/api/auth/me");
 
   if (!response.ok) {
     throw new Error("Wystąpił błąd");
