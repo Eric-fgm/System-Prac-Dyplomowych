@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-query";
 import LoginPage from "./routes/Login";
 import ThesesPage from "./routes/theses";
+import CreateUserForm from "./routes/create.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/create",
+    element: <CreateUserForm />,
   },
 ]);
 
