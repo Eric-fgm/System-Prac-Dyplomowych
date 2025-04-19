@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
+// Przykładowe dane o pracach dyplomowych
 const theses = [
   {
     id: "1",
@@ -28,34 +30,49 @@ const theses = [
   },
 ];
 
+// Funkcja do pobierania prac dyplomowych z backendu
 const fetchTheses = async ({ page }) => {
-  const response = await fetch(`http://localhost:3000/api/theses?page=${page}`);
-
-  if (!response.ok) {
-    throw new Error("Wystąpił błąd");
+  try {
+    const response = await axios.get(`http://localhost:8000/theses?page=${page}`);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(`Błąd serwera: ${error.response.status} - ${error.response.data.detail}`);
+    } else if (error.request) {
+      throw new Error("Brak odpowiedzi z serwera");
+    } else {
+      throw new Error(`Błąd podczas tworzenia zapytania: ${error.message}`);
+    }
   }
-
-  return await response.json();
 };
 
 const reserveThesis = async (id) => {
-  const response = await fetch(
-    `http://localhost:3000/api/theses/${id}/reserve`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+  try {
+    const response = await axios.post(
+      `http://localhost:8000/theses/${id}/reserve`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(`Błąd serwera: ${error.response.status} - ${error.response.data.detail}`);
+    } else if (error.request) {
+      // Brak odpowiedzi z serwera
+      throw new Error("Brak odpowiedzi z serwera");
+    } else {
+      // Błąd w czasie konfiguracji zapytania
+      throw new Error(`Błąd podczas tworzenia zapytania: ${error.message}`);
     }
-  );
-
-  if (!response.ok) {
-    throw new Error("Wystąpił błąd");
   }
-
-  return await response.json();
 };
 
+
+// Hook do pobierania prac dyplomowych
 export const useThesesQuery = (params) => {
   const { data, ...restQuery } = useQuery({
     queryKey: ["theses", params],
@@ -63,11 +80,12 @@ export const useThesesQuery = (params) => {
   });
 
   return {
-    theses: data ?? theses,
+    theses: data ?? theses,  // Jeśli dane są dostępne, zwróć je, jeśli nie - zwróć dane przykładowe
     ...restQuery,
   };
 };
 
+// Hook do rezerwowania pracy dyplomowej
 export const useThesisReservationMutation = () => {
   const queryClient = useQueryClient();
 

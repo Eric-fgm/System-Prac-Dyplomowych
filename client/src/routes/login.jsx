@@ -1,19 +1,51 @@
+import { useState } from "react";
+import axios from "axios";
 import { Input, Button, Label } from "../components";
-import { useLoginMutation } from "../services/auth";
 
 const LoginPage = () => {
-  const { mutate } = useLoginMutation();
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
+  const [isPending, setIsPending] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const credentials = {};
-    for (var [key, value] of new FormData(e.target)) {
-      credentials[key] = value;
-    }
-
-    mutate(credentials);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsPending(true);
+  setIsError(false);
+
+  const formData = new URLSearchParams();
+  formData.append("username", credentials.email);
+  formData.append("password", credentials.password);
+
+  try {
+    const response = await axios.post("http://localhost:8000/auth/login", formData, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    localStorage.setItem("access_token", response.data.access_token);
+    window.location.href = "/";
+  } catch (error) {
+    setIsError(true);
+    console.error("Błąd logowania: ", error.response ? error.response.data : error.message);
+  } finally {
+    setIsPending(false);
+  }
+};
+
+
+
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
@@ -26,9 +58,7 @@ const LoginPage = () => {
                   href="#"
                   className="flex flex-col items-center gap-2 font-medium"
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-md">
-                    {/* <GalleryVerticalEnd className="size-6" /> */}
-                  </div>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-md"></div>
                   <span className="sr-only">Acme Inc.</span>
                 </a>
                 <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
@@ -39,6 +69,7 @@ const LoginPage = () => {
                   </a>
                 </div>
               </div>
+
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
@@ -47,6 +78,8 @@ const LoginPage = () => {
                     type="email"
                     name="email"
                     placeholder="Twój email"
+                    value={credentials.email}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -57,16 +90,26 @@ const LoginPage = () => {
                     type="password"
                     name="password"
                     placeholder="Twoje hasło"
+                    value={credentials.password}
+                    onChange={handleChange}
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full">
-                  Sign in with Email
+
+                {isError && (
+                  <div className="text-sm text-red-500">
+                    Nieprawidłowe dane logowania
+                  </div>
+                )}
+
+                <Button type="submit" className="w-full" disabled={isPending}>
+                  {isPending ? "Logowanie..." : "Sign in with Email"}
                 </Button>
               </div>
             </div>
           </form>
-          <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
+
+          <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
             By clicking continue, you agree to our{" "}
             <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
           </div>
