@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import Avatar from "./avatar";
+import UserDropdown from "./user-dropdown";
 
 const Navigation = () => {
   return (
@@ -10,7 +10,7 @@ const Navigation = () => {
         </Link>
         <nav className="flex items-center space-x-4 lg:space-x-6">
           <Link
-            to="/examples/dashboard"
+            to="/"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             Tematy
@@ -23,7 +23,7 @@ const Navigation = () => {
           </Link>
         </nav>
         <div className="ml-auto">
-          <Avatar />
+          <UserDropdown />
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import * as React from "react";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { Link, useLocation } from "react-router";
 
-import { cn } from "../lib/utils";
+import { cn } from "../helpers/utils";
 import { buttonVariants } from "../components/button";
 
 const PaginationRoot = ({ className, ...props }) => (

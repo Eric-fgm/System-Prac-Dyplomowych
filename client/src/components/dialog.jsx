@@ -2,7 +2,7 @@ import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 
-import { cn } from "../lib/utils";
+import { cn } from "../helpers/utils";
 import Button from "./button";
 
 const DialogRoot = DialogPrimitive.Root;
@@ -100,18 +100,20 @@ const Dialog = ({ children, trigger, title, description, onSubmit }) => {
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        {children}
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">Anuluj</Button>
-          </DialogClose>
-          <Button
-            className="bg-green-600 hover:bg-green-700 text-white"
-            onClick={onSubmit}
-          >
-            Potwierdź rezerwację
-          </Button>
-        </DialogFooter>
+        <form onSubmit={onSubmit}>
+          {children}
+          <DialogFooter className="mt-4">
+            <DialogClose asChild>
+              <Button variant="outline">Anuluj</Button>
+            </DialogClose>
+            <Button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              Potwierdź rezerwację
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </DialogRoot>
   );
