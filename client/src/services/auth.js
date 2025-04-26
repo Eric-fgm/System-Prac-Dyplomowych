@@ -1,24 +1,40 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import { API_BASE } from "../helpers/constants";
 
-const login = async (credentials) => {
-  const response = await fetch("http://localhost:3000/api/auth/login", {
+const login = async ({ email, ...credentials }) => {
+  const response = await fetch(`${API_BASE}/auth/login`, {
     method: "POST",
-    body: JSON.stringify(credentials),
+    credentials: "include",
+    body: new URLSearchParams({ username: email, ...credentials }),
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
   });
 
   if (!response.ok) {
     throw new Error("Wystąpił błąd");
   }
+};
 
-  return await response.json();
+const logout = async () => {
+  const response = await fetch(`${API_BASE}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Wystąpił błąd");
+  }
 };
 
 const fetchMe = async () => {
-  const response = await fetch("http://localhost:3000/api/auth/me");
+  const response = await fetch(`${API_BASE}/users/me`, {
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   if (!response.ok) {
     throw new Error("Wystąpił błąd");
@@ -34,8 +50,21 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: login,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["auth/me"] });
+      queryClient.clear();
       navigate("/");
+    },
+  });
+};
+
+export const useLogoutMutation = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      queryClient.clear();
+      navigate("/login");
     },
   });
 };
@@ -48,7 +77,6 @@ export const useAuthQuery = () => {
     queryKey: ["auth/me"],
     queryFn: fetchMe,
     onError: async () => {
-      await queryClient.cancelQueries();
       queryClient.clear();
       navigate("/login");
     },

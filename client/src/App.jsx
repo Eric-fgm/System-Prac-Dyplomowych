@@ -7,11 +7,13 @@ import {
 } from "@tanstack/react-query";
 import LoginPage from "./routes/Login";
 import ThesesPage from "./routes/theses";
+import ProtectedRoute from "./components/protected-route";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
       retry: false,
     },
   },
@@ -26,7 +28,11 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ThesesPage />,
+    element: (
+      <ProtectedRoute>
+        <ThesesPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/login",
@@ -36,9 +42,11 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <div className="mx-auto min-w-[360px] max-w-[2560px]">
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </div>
   );
 };
 

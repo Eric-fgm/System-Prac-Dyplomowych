@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 
-import { cn } from "../lib/utils";
+import { cn } from "../helpers/utils";
 
 const AvatarRoot = React.forwardRef(({ className, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
     className={cn(
-      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+      "relative flex h-9 w-9 shrink-0 overflow-hidden rounded-full",
       className
     )}
     {...props}
@@ -36,9 +36,9 @@ const AvatarFallback = React.forwardRef(({ className, ...props }, ref) => (
 ));
 AvatarFallback.displayName = "AvatarFallback";
 
-const Avatar = ({ name = "?", src, alt }) => {
+const Avatar = ({ name = "?", src, alt, ...props }) => {
   return (
-    <AvatarRoot className="h-8 w-8">
+    <AvatarRoot {...props}>
       <AvatarImage src={src} alt={alt} />
       <AvatarFallback>{name}</AvatarFallback>
     </AvatarRoot>
