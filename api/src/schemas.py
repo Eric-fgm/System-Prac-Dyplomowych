@@ -1,85 +1,77 @@
+# src/schemas.py
 import uuid
-from .models.thesis import ThesisStatus
 from typing import Optional
-
 from pydantic import BaseModel, EmailStr
 from fastapi_users import schemas
-
+from .models.thesis import ThesisStatus # Ensure this path is correct if schemas.py is in a different dir than models/
 
 # -------------------------
 #   USER SCHEMAS
 # -------------------------
 class UserRead(schemas.BaseUser[uuid.UUID]):
     email: EmailStr
-    first_name: str
-    last_name: str
+    first_name: Optional[str] = None # Make fields optional if they can be missing in DB
+    last_name: Optional[str] = None  # Make fields optional if they can be missing in DB
 
     class Config:
-        orm_mode = True
-
+        from_attributes = True
 
 class UserCreate(schemas.BaseUserCreate):
     first_name: str
     last_name: str
 
-
 class UserUpdate(schemas.BaseUserUpdate):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
 
-
 # -------------------------
 #   SUPERVISOR SCHEMAS
 # -------------------------
-
-class SupervisorCreate(BaseModel):
-    user_id: int
+class SupervisorBase(BaseModel): # Renamed for clarity, not strictly necessary
     specialization: str
 
+class SupervisorCreate(SupervisorBase):
+    user_id: str
 
-class SupervisorUpdate(BaseModel):
-    user_id: Optional[int] = None
-    specialization: Optional[str] = None
-
-
-class SupervisorRead(BaseModel):
-    id: int
-    specialization: str
-    user: UserRead
+class SupervisorRead(SupervisorBase): # For response
+    id: str
+    user_id: str # Keep this to show the FK value
+    user: Optional[UserRead] = None # Make the nested User object optional
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+class SupervisorUpdate(BaseModel): # Was SupervisorBase before, but update can be partial
+    user_id: Optional[str] = None
+    specialization: Optional[str] = None
 
 
 # -------------------------
 #   THESIS SCHEMAS
 # -------------------------
-
-class ThesisCreate(BaseModel):
+class ThesisBase(BaseModel): # Renamed for clarity
     title: str
     description: str
+
+class ThesisCreate(ThesisBase):
     status: Optional[ThesisStatus] = ThesisStatus.proposed
-    supervisor_id: int
-    student_id: int
+    supervisor_id: str
+    student_id: str
 
-
-class ThesisUpdate(BaseModel):
+class ThesisUpdate(BaseModel): # Was ThesisBase, but update can be partial
     title: Optional[str] = None
     description: Optional[str] = None
     status: Optional[ThesisStatus] = None
-    supervisor_id: Optional[int] = None
-    student_id: Optional[int] = None
+    supervisor_id: Optional[str] = None
+    student_id: Optional[str] = None
 
-
-class ThesisRead(BaseModel):
-    id: int
-    title: str
-    description: str
+class ThesisRead(ThesisBase): # For response
+    id: str
     status: ThesisStatus
-    supervisor: SupervisorRead
-    student: UserRead
+    # supervisor_id: str # Optional: You might want to include the raw FKs
+    # student_id: str    # Optional: You might want to include the raw FKs
+    supervisor: Optional[SupervisorRead] = None # Make nested Supervisor optional
+    student: Optional[UserRead] = None      # Make nested Student optional
 
     class Config:
-        orm_mode = True
-
-
+        from_attributes = True
