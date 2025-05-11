@@ -13,13 +13,15 @@ from fastapi_users.authentication import (
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
 
-from db import Base, get_session
+from ..db import Base, get_session
 
 SECRET = "SECRET"
 
 router = APIRouter()
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
+    __tablename__ = "users"
+
     first_name = Column(String)
     last_name = Column(String)
 
