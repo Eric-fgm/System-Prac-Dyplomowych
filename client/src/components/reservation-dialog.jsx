@@ -1,18 +1,22 @@
-import React from "react";
 import { Calendar } from "lucide-react";
 import Dialog from "./dialog";
 import Label from "./label";
 import Textarea from "./textarea";
 import { useThesisReservationMutation } from "../services/theses";
+import { useState } from "react";
 
-const ReservationDialog = ({ trigger, id, title, supervisor, deadline }) => {
-  const { mutate } = useThesisReservationMutation(id);
+const ReservationDialog = ({ trigger, id, title, supervisor, year }) => {
+  const { mutateAsync } = useThesisReservationMutation(id);
+  const [open, setOpen] = useState(false);
 
   return (
     <Dialog
-      title="Reserve Thesis"
+      title="Zapisz się"
       description="Submit your information to reserve this thesis topic. Your supervisor will be notified."
+      buttonText="Potwierdź"
       trigger={trigger}
+      open={open}
+      onOpenChange={setOpen}
       onSubmit={(e) => {
         e.preventDefault();
         const fields = {};
@@ -20,23 +24,27 @@ const ReservationDialog = ({ trigger, id, title, supervisor, deadline }) => {
           fields[key] = value;
         }
 
-        mutate(fields);
+        mutateAsync(fields)
+          .then(() => setOpen(false))
+          .catch(() => {});
       }}
     >
       <div className="mb-4 p-3 bg-gray-50 rounded-md">
         <h4 className="font-medium text-gray-900">{title}</h4>
-        <p className="text-sm text-gray-600 mt-1">Supervisor: {supervisor}</p>
+        <p className="text-sm text-gray-600 mt-1">
+          Autor: {supervisor.user.first_name} {supervisor.user.last_name}
+        </p>
         <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
           <Calendar className="h-4 w-4" />
-          <span>Deadline: {deadline}</span>
+          <span>Deadline: 16 Mar {year}</span>
         </div>
       </div>
 
       <div className="grid gap-2">
         <Label htmlFor="motivation">
-          Motivation{" "}
+          Motywacja{" "}
           <span className="text-sm text-gray-500">
-            (Why are you interested in this thesis?)
+            (Dlaczego jesteś zainteresowany?)
           </span>
         </Label>
         <Textarea

@@ -1,4 +1,4 @@
-# src/routes/supervisor_router.py
+import uuid
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -20,7 +20,8 @@ async def list_supervisors(session: AsyncSession = Depends(get_session)):
     result = await session.execute(
         select(Supervisor).options(selectinload(Supervisor.user))
     )
-    return result.scalars().all() # .all() is correct for scalars()
+    print(result)
+    return result.scalars().all()
 
 @supervisor_router.get("/{supervisor_id}", response_model=SupervisorRead)
 async def get_supervisor(

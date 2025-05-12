@@ -91,9 +91,17 @@ const DialogDescription = React.forwardRef(({ className, ...props }, ref) => (
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
-const Dialog = ({ children, trigger, title, description, onSubmit }) => {
+const Dialog = ({
+  children,
+  trigger,
+  title,
+  description,
+  buttonText,
+  onSubmit,
+  ...props
+}) => {
   return (
-    <DialogRoot>
+    <DialogRoot {...props}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
@@ -110,7 +118,7 @@ const Dialog = ({ children, trigger, title, description, onSubmit }) => {
               type="submit"
               className="bg-green-600 hover:bg-green-700 text-white"
             >
-              Potwierdź rezerwację
+              {buttonText}
             </Button>
           </DialogFooter>
         </form>

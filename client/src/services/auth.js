@@ -29,7 +29,7 @@ const logout = async () => {
 };
 
 const fetchMe = async () => {
-  const response = await fetch(`${API_BASE}/users/me`, {
+  const response = await fetch(`${API_BASE}/auth/me`, {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
