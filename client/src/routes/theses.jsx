@@ -5,6 +5,7 @@ import {
   Navigation,
   Pagination,
   ThesisSkeleton,
+  Placeholder,
 } from "../components";
 import { useThesesQuery } from "../services/theses";
 
@@ -27,7 +28,7 @@ export default function ThesesPage() {
               <ThesisSkeleton />
               <ThesisSkeleton />
             </div>
-          ) : (
+          ) : theses.length ? (
             <>
               <div className="space-y-4">
                 {theses.map((thesis) => (
@@ -36,6 +37,11 @@ export default function ThesesPage() {
               </div>
               <Pagination className="mt-4" />
             </>
+          ) : (
+            <Placeholder
+              title="Nie znaleziono prac dyplomowych"
+              description="W repozytorium nie ma obecnie żadnych prac dyplomowych."
+            />
           )}
         </div>
       </div>

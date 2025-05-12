@@ -11,3 +11,4 @@ export { default as Navigation } from "./navigation";
 export { default as Thesis } from "./thesis";
 export { default as ThesisSkeleton } from "./thesis-skeleton";
 export { default as ThesesTopbar } from "./theses-topbar";
+export { default as Placeholder } from "./placeholder";
