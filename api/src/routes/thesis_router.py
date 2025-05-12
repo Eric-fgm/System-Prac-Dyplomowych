@@ -23,7 +23,7 @@ async def list_theses(session: AsyncSession = Depends(get_session)):
     result = await session.execute(
         select(Thesis)
         .options(
-            selectinload(Thesis.supervisor).selectinload(Supervisor.user),
+            selectinload(Thesis.supervisor).selectinload(Supervisor.user)
         )
     )
     theses = result.scalars().all()
@@ -36,7 +36,7 @@ async def get_thesis(thesis_id: str, session: AsyncSession = Depends(get_session
         select(Thesis)
         .where(Thesis.id == thesis_id)
         .options(
-            selectinload(Thesis.supervisor).selectinload(Supervisor.user),
+            selectinload(Thesis.supervisor).selectinload(Supervisor.user)
         )
     )
     thesis = result.scalar_one_or_none()

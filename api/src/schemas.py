@@ -1,5 +1,4 @@
 # src/schemas.py
-import uuid
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 from fastapi_users import schemas
@@ -8,7 +7,7 @@ from .models.thesis import ThesisStatus # Ensure this path is correct if schemas
 # -------------------------
 #   USER SCHEMAS
 # -------------------------
-class UserRead(schemas.BaseUser[uuid.UUID]):
+class UserRead(schemas.BaseUser[int]):
     email: EmailStr
     first_name: Optional[str] = None # Make fields optional if they can be missing in DB
     last_name: Optional[str] = None  # Make fields optional if they can be missing in DB
@@ -31,16 +30,15 @@ class SupervisorBase(BaseModel): # Renamed for clarity, not strictly necessary
     specialization: str
 
 class SupervisorCreate(SupervisorBase):
-    user_id: str
+    user_id: int
 
 class SupervisorRawRead(SupervisorBase):
     id: str
-    user_id: str
+    user_id: int
 
 class SupervisorRead(SupervisorBase): # For response
     id: str
-    user_id: str # Keep this to show the FK value
-    user: Optional[UserRead] = None # Make the nested User object optional
+    user: UserRead
 
     class Config:
         from_attributes = True
@@ -78,7 +76,7 @@ class ThesisRead(ThesisBase): # For response
     status: ThesisStatus
     # supervisor_id: str # Optional: You might want to include the raw FKs
     # student_id: str    # Optional: You might want to include the raw FKs
-    supervisor: Optional[SupervisorRead] = None # Make nested Supervisor optional
+    supervisor: SupervisorRead # Make nested Supervisor optional
 
     class Config:
         from_attributes = True
