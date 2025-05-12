@@ -1,5 +1,7 @@
 import { Link } from "react-router";
 import UserDropdown from "./user-dropdown";
+import Button from "./button";
+import CreateThesisDialog from "./create-thesis-dialog";
 
 const Navigation = () => {
   return (
@@ -22,7 +24,10 @@ const Navigation = () => {
             Promotorzy
           </Link>
         </nav>
-        <div className="ml-auto">
+        <div className="flex gap-x-4 ml-auto">
+          <CreateThesisDialog
+            trigger={<Button size="sm">Dodaj pracę</Button>}
+          />
           <UserDropdown />
         </div>
       </div>

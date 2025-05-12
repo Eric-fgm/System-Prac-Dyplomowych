@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .db import create_db_and_tables
-from .routes.auth_router import auth_router, users_router
+from .routes.auth_router import auth_router, register_router
 from .routes.thesis_router import thesis_router
 from .routes.supervisor_router import supervisor_router
 
@@ -26,6 +26,6 @@ app.add_middleware(
 )
 
 app.include_router(auth_router, prefix="/auth")
-app.include_router(users_router, prefix="/users")
+app.include_router(register_router, prefix="/auth")
 app.include_router(thesis_router)
 app.include_router(supervisor_router)

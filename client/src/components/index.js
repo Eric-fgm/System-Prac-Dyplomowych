@@ -12,3 +12,4 @@ export { default as Thesis } from "./thesis";
 export { default as ThesisSkeleton } from "./thesis-skeleton";
 export { default as ThesesTopbar } from "./theses-topbar";
 export { default as Placeholder } from "./placeholder";
+export { default as CreateThesisDialog } from "./create-thesis-dialog";

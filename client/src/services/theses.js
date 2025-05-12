@@ -16,6 +16,22 @@ const fetchTheses = async (params) => {
   return await response.json();
 };
 
+const createThesis = async (thesis) => {
+  const response = await fetch(`${API_BASE}/theses`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...thesis, status: "proposed" }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Wystąpił błąd");
+  }
+
+  return await response.json();
+};
+
 const reserveThesis = async (id, body) => {
   const response = await fetch(`${API_BASE}/theses/${id}/reserve`, {
     method: "POST",
@@ -42,6 +58,17 @@ export const useThesesQuery = (params) => {
     theses: data,
     ...restQuery,
   };
+};
+
+export const useThesisCreateMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createThesis,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["theses"] });
+    },
+  });
 };
 
 export const useThesisReservationMutation = (id) => {

@@ -24,7 +24,6 @@ async def list_theses(session: AsyncSession = Depends(get_session)):
         select(Thesis)
         .options(
             selectinload(Thesis.supervisor).selectinload(Supervisor.user),
-            selectinload(Thesis.student)
         )
     )
     theses = result.scalars().all()
@@ -38,7 +37,6 @@ async def get_thesis(thesis_id: str, session: AsyncSession = Depends(get_session
         .where(Thesis.id == thesis_id)
         .options(
             selectinload(Thesis.supervisor).selectinload(Supervisor.user),
-            selectinload(Thesis.student)
         )
     )
     thesis = result.scalar_one_or_none()
@@ -52,16 +50,14 @@ async def create_thesis(data: ThesisCreate, session: AsyncSession = Depends(get_
     # Validate supervisor exists
     if not await session.get(Supervisor, data.supervisor_id):
         raise HTTPException(status_code=400, detail="Supervisor not found")
-    # Validate student exists
-    if not await session.get(User, data.student_id):
-        raise HTTPException(status_code=400, detail="Student not found")
 
     thesis = Thesis(
         title=data.title,
         description=data.description,
         status=data.status,
+        department=data.department,
+        year=data.year,
         supervisor_id=data.supervisor_id,
-        student_id=data.student_id
     )
     session.add(thesis)
     await session.commit()
@@ -75,7 +71,6 @@ async def create_thesis(data: ThesisCreate, session: AsyncSession = Depends(get_
         .where(Thesis.id == thesis.id)  # Use the ID of the just-created thesis
         .options(
             selectinload(Thesis.supervisor).selectinload(Supervisor.user),
-            selectinload(Thesis.student)
         )
     )
     created_thesis_with_relations = result.scalar_one_or_none()
@@ -108,10 +103,6 @@ async def update_thesis(thesis_id: str, data: ThesisUpdate,
         if not await session.get(Supervisor, update_data["supervisor_id"]):
             raise HTTPException(status_code=400, detail="Supervisor not found for update.")
 
-    if "student_id" in update_data and update_data["student_id"] is not None:
-        if not await session.get(User, update_data["student_id"]):
-            raise HTTPException(status_code=400, detail="Student not found for update.")
-
     for field, value in update_data.items():
         setattr(thesis, field, value)
 
@@ -125,7 +116,6 @@ async def update_thesis(thesis_id: str, data: ThesisUpdate,
         .where(Thesis.id == thesis_id)
         .options(
             selectinload(Thesis.supervisor).selectinload(Supervisor.user),
-            selectinload(Thesis.student)
         )
     )
     updated_thesis_with_relations = result_updated.scalar_one_or_none()

@@ -1,4 +1,3 @@
-import React from "react";
 import { Calendar } from "lucide-react";
 import Dialog from "./dialog";
 import Label from "./label";
@@ -12,6 +11,7 @@ const ReservationDialog = ({ trigger, id, title, supervisor, deadline }) => {
     <Dialog
       title="Reserve Thesis"
       description="Submit your information to reserve this thesis topic. Your supervisor will be notified."
+      buttonText="Potwierdź rezerwację"
       trigger={trigger}
       onSubmit={(e) => {
         e.preventDefault();

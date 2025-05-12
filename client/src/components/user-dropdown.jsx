@@ -1,4 +1,3 @@
-import React from "react";
 import DropdownMenu from "./dropdown";
 import Avatar from "./avatar";
 import { useAuthQuery, useLogoutMutation } from "../services/auth";

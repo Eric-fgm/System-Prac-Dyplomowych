@@ -2,7 +2,7 @@ import uuid
 
 # from ..schemas import UserPriviligedRead
 from ..models.supervisor import Supervisor
-from ..schemas import UserPriviligedRead
+from ..schemas import UserCreate, UserPriviligedRead, UserRead
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import (
@@ -44,10 +44,10 @@ fastapi_users = FastAPIUsers[User, uuid.UUID](get_user_manager, [auth_adapter])
 current_user = fastapi_users.current_user()
 
 auth_router = fastapi_users.get_auth_router(auth_adapter)
+register_router = fastapi_users.get_register_router(UserRead, UserCreate)
 # users_router = fastapi_users.get_users_router(UserRead, UserUpdate)
-users_router = APIRouter(tags=["users"])
 
-@users_router.get("/me", response_model=UserPriviligedRead)
+@auth_router.get("/me", response_model=UserPriviligedRead)
 async def get_me(user: User = Depends(current_user), session: AsyncSession = Depends(get_session)):
     result = await session.execute(
         select(Supervisor)
@@ -61,4 +61,4 @@ async def get_me(user: User = Depends(current_user), session: AsyncSession = Dep
                               is_verified=user.is_verified,
                               first_name=user.first_name,
                               last_name=user.last_name,
-                              is_supervisor=supervisor is not None)
+                              supervisor=supervisor)

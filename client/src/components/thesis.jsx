@@ -11,24 +11,24 @@ const Thesis = ({
   author,
   department,
   status,
-  abstract,
+  description,
   tags,
 }) => {
   const getStatusBadge = () => {
     switch (status) {
-      case "Wolny":
+      case "proposed":
         return (
           <Badge className="bg-green-50 text-green-700 border-none font-normal">
             Wolny
           </Badge>
         );
-      case "Zarezerwowany":
+      case "submitted":
         return (
           <Badge className="bg-amber-50 text-amber-700 border-none font-normal">
             Zarezerwowany
           </Badge>
         );
-      case "Zaakceptowany":
+      case "accepted":
         return (
           <Badge className="bg-blue-50 text-blue-700 border-none font-normal">
             Zaakceptowany
@@ -69,11 +69,11 @@ const Thesis = ({
           </div>
         </div>
 
-        <p className="text-gray-600 line-clamp-2 text-sm">{abstract}</p>
+        <p className="text-gray-600 line-clamp-2 text-sm">{description}</p>
 
         <div className="flex items-center gap-2">
           <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
+            {(tags ?? []).map((tag) => (
               <Badge key={tag} variant="secondary">
                 {tag}
               </Badge>
@@ -101,7 +101,7 @@ const Thesis = ({
               Więcej
             </Button>
 
-            {status === "Wolny" && (
+            {status === "proposed" && (
               <ReservationDialog
                 id={id}
                 title={title}

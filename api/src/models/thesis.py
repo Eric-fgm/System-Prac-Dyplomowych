@@ -2,7 +2,7 @@
 
 import uuid
 import enum
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Integer, Column, String, ForeignKey
 from sqlalchemy.types import Enum as SAEnum
 from sqlalchemy.orm import relationship
 from ..db import Base
@@ -27,8 +27,9 @@ class Thesis(Base):
         default=ThesisStatus.proposed,
         nullable=False
     )
+    department = Column(String, nullable=False)
+    year = Column(Integer, nullable=False)
+
     supervisor_id = Column(String, ForeignKey("supervisors.id"), nullable=False)
-    student_id = Column(String, ForeignKey("users.id"), nullable=False)
 
     supervisor = relationship("Supervisor", back_populates="theses")
-    student = relationship("User", foreign_keys=[student_id], backref="theses")
