@@ -1,4 +1,5 @@
 import { Navigate } from "react-router";
+import { Navigation } from "../components";
 import { useAuthQuery } from "../services/auth";
 
 const ProtectedRoute = ({ children }) => {
@@ -8,7 +9,12 @@ const ProtectedRoute = ({ children }) => {
 
   if (!user) return <Navigate to="/login" />;
 
-  return children;
+  return (
+    <div className="">
+      <Navigation />
+      <div className="max-w-6xl mt-4 px-4 mx-auto">{children}</div>
+    </div>
+  );
 };
 
 export default ProtectedRoute;

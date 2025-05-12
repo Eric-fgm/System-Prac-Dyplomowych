@@ -8,11 +8,11 @@ const Thesis = ({
   id,
   title,
   year,
-  author,
   department,
   status,
   description,
   tags,
+  supervisor,
 }) => {
   const getStatusBadge = () => {
     switch (status) {
@@ -59,7 +59,8 @@ const Thesis = ({
 
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
           <div className="text-gray-700">
-            <span className="font-medium">Author:</span> {author}
+            <span className="font-medium">Author:</span>{" "}
+            {supervisor.user.first_name} {supervisor.user.last_name}
           </div>
           <div className="text-gray-700">
             <span className="font-medium">Department:</span> {department}
@@ -105,8 +106,8 @@ const Thesis = ({
               <ReservationDialog
                 id={id}
                 title={title}
-                supervisor={author}
-                deadline="June 15, 2024"
+                supervisor={supervisor}
+                year={year}
                 trigger={
                   <Button
                     variant="default"

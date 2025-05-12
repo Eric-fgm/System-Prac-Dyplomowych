@@ -98,9 +98,10 @@ const Dialog = ({
   description,
   buttonText,
   onSubmit,
+  ...props
 }) => {
   return (
-    <DialogRoot>
+    <DialogRoot {...props}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>

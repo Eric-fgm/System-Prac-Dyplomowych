@@ -2,7 +2,6 @@ import { useSearchParams } from "react-router";
 import {
   ThesesTopbar,
   Thesis,
-  Navigation,
   Pagination,
   ThesisSkeleton,
   Placeholder,
@@ -16,35 +15,32 @@ export default function ThesesPage() {
   );
 
   return (
-    <div className="">
-      <Navigation />
-      <div className="max-w-6xl mt-4 px-4 mx-auto">
-        <ThesesTopbar />
+    <>
+      <ThesesTopbar />
 
-        <div className="py-4">
-          {isLoading ? (
+      <div className="py-4">
+        {isLoading ? (
+          <div className="space-y-4">
+            <ThesisSkeleton />
+            <ThesisSkeleton />
+            <ThesisSkeleton />
+          </div>
+        ) : theses.length ? (
+          <>
             <div className="space-y-4">
-              <ThesisSkeleton />
-              <ThesisSkeleton />
-              <ThesisSkeleton />
+              {theses.map((thesis) => (
+                <Thesis key={thesis.id} {...thesis} />
+              ))}
             </div>
-          ) : theses.length ? (
-            <>
-              <div className="space-y-4">
-                {theses.map((thesis) => (
-                  <Thesis key={thesis.id} {...thesis} />
-                ))}
-              </div>
-              <Pagination className="mt-4" />
-            </>
-          ) : (
-            <Placeholder
-              title="Nie znaleziono prac dyplomowych"
-              description="W repozytorium nie ma obecnie żadnych prac dyplomowych."
-            />
-          )}
-        </div>
+            <Pagination className="mt-4" />
+          </>
+        ) : (
+          <Placeholder
+            title="Nie znaleziono prac dyplomowych"
+            description="W repozytorium nie ma obecnie żadnych prac dyplomowych."
+          />
+        )}
       </div>
-    </div>
+    </>
   );
 }

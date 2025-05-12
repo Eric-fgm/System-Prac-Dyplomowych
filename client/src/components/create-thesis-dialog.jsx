@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Dialog from "./dialog";
 import Label from "./label";
 import Input from "./input";
@@ -6,12 +7,12 @@ import Button from "./button";
 import { useThesisCreateMutation } from "../services/theses";
 import { Calendar, FileText, Plus, X } from "lucide-react";
 import { useAuthQuery } from "../services/auth";
-import { useState } from "react";
 
 const CreateThesisDialog = ({ trigger }) => {
   const { user } = useAuthQuery();
-  const { mutate } = useThesisCreateMutation();
+  const { mutateAsync } = useThesisCreateMutation();
   const [tags, setTags] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const handleTagAdd = () => {
     setTags([...tags, ""]);
@@ -36,6 +37,8 @@ const CreateThesisDialog = ({ trigger }) => {
         description="Submit your information to reserve this thesis topic. Your supervisor will be notified."
         buttonText="Potwierdź"
         trigger={trigger}
+        open={open}
+        onOpenChange={setOpen}
         onSubmit={(e) => {
           e.preventDefault();
           const fields = {};
@@ -43,7 +46,9 @@ const CreateThesisDialog = ({ trigger }) => {
             fields[key] = key === "year" ? parseInt(value, 10) : value;
           }
 
-          mutate(fields);
+          mutateAsync(fields)
+            .then(() => setOpen(false))
+            .catch(() => {});
         }}
       >
         <div className="space-y-4">

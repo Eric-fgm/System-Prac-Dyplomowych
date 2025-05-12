@@ -5,9 +5,10 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import ProtectedRoute from "./components/protected-route";
 import LoginPage from "./routes/Login";
 import ThesesPage from "./routes/theses";
-import ProtectedRoute from "./components/protected-route";
+import SupervisorsPage from "./routes/supervisors";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +32,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <ThesesPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/supervisors",
+    element: (
+      <ProtectedRoute>
+        <SupervisorsPage />
       </ProtectedRoute>
     ),
   },

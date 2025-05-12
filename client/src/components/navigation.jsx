@@ -11,14 +11,11 @@ const Navigation = () => {
           Dyplom
         </Link>
         <nav className="flex items-center space-x-4 lg:space-x-6">
-          <Link
-            to="/"
-            className="text-sm font-medium transition-colors hover:text-primary"
-          >
+          <Link to="/" className="text-sm font-medium">
             Tematy
           </Link>
           <Link
-            to="/examples/dashboard"
+            to="/supervisors"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Promotorzy
