@@ -16,6 +16,9 @@ class UserRead(schemas.BaseUser[uuid.UUID]):
     class Config:
         from_attributes = True
 
+class UserPriviligedRead(UserRead):
+    is_supervisor: bool
+
 class UserCreate(schemas.BaseUserCreate):
     first_name: str
     last_name: str
