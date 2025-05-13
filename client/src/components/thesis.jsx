@@ -59,14 +59,15 @@ const Thesis = ({
 
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
           <div className="text-gray-700">
-            <span className="font-medium">Author:</span>{" "}
+            <span className="font-medium">Autor:</span>{" "}
             {supervisor.user.first_name} {supervisor.user.last_name}
           </div>
           <div className="text-gray-700">
-            <span className="font-medium">Department:</span> {department}
+            <span className="font-medium">Kierunek:</span> {department}
           </div>
           <div className="flex items-center gap-1 text-gray-700">
-            <span className="font-medium">Status:</span> {status}
+            <span className="font-medium">Status:</span>{" "}
+            {status === "proposed" ? "Wolny" : "Niaznany"}
           </div>
         </div>
 

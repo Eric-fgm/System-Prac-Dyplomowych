@@ -26,7 +26,7 @@ const ThesesTopbar = () => {
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
           <Input
             type="search"
-            placeholder="Search by title, author, or keywords..."
+            placeholder="Wyszukaj po tytule, autorze lub słowach kluczowych..."
             className="pl-9"
             defaultValue={searchParams.get("query")}
           />

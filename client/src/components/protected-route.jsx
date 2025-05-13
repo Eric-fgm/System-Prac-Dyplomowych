@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
   if (!user) return <Navigate to="/login" />;
 
   return (
-    <div className="">
+    <div className="min-h-screen bg-gray-100">
       <Navigation />
       <div className="max-w-6xl mt-4 px-4 mx-auto">{children}</div>
     </div>

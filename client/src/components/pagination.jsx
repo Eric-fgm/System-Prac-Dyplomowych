@@ -82,7 +82,7 @@ const PaginationEllipsis = ({ className, ...props }) => (
 );
 PaginationEllipsis.displayName = "PaginationEllipsis";
 
-const Pagination = ({ totalPages = 2, ...props }) => {
+const Pagination = ({ totalPages = 1, ...props }) => {
   const { pathname, search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const currentPage = parseInt(searchParams.get("page") ?? "1", 10);

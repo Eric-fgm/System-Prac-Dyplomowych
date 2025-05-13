@@ -28,6 +28,17 @@ const logout = async () => {
   }
 };
 
+const register = async () => {
+  const response = await fetch(`${API_BASE}/auth/register`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Wystąpił błąd");
+  }
+};
+
 const fetchMe = async () => {
   const response = await fetch(`${API_BASE}/auth/me`, {
     credentials: "include",
@@ -66,6 +77,12 @@ export const useLogoutMutation = () => {
       queryClient.clear();
       navigate("/login");
     },
+  });
+};
+
+export const useRegisterMutation = () => {
+  return useMutation({
+    mutationFn: register,
   });
 };
 

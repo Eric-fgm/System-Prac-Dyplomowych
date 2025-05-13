@@ -50,7 +50,7 @@ const ReservationDialog = ({ trigger, id, title, supervisor, year }) => {
         <Textarea
           id="motivation"
           name="motivation"
-          placeholder="Briefly describe why you're interested in this thesis topic and your relevant experience..."
+          placeholder="Opisz swoją motywację"
           rows={4}
           required
         />

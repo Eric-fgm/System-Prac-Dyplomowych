@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_BASE } from "../helpers/constants";
 
 const fetchSupervisors = async () => {
@@ -14,6 +14,32 @@ const fetchSupervisors = async () => {
   }
 
   return await response.json();
+};
+
+const createSupervisor = async (supervisor) => {
+  const response = await fetch(`${API_BASE}/supervisors`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(supervisor),
+  });
+
+  if (!response.ok) {
+    throw new Error("Wystąpił błąd");
+  }
+};
+
+export const useSupervisorsMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createSupervisor,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["supervisors"] });
+    },
+  });
 };
 
 export const useSupervisorsQuery = () => {
