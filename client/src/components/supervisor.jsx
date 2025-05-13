@@ -7,15 +7,19 @@ import { Link } from "react-router";
 const Supervisor = ({ id, specialization, user }) => {
   return (
     <div className="px-4 border-t flex h-20 hover:bg-gray-50">
-      <div className="flex basis-[28%] items-center gap-3">
+      <div className="flex sm:basis-[40%] md:basis-[28%] items-center gap-3">
         <Avatar name={`${user.first_name[0]}${user.last_name[0]}`} />
         <div className="font-medium">
-          <div className="text-gray-900">{user.first_name}</div>
+          <div className="text-gray-900">
+            {user.first_name} {user.last_name}
+          </div>
           <div className="text-sm text-gray-500">{user.email}</div>
         </div>
       </div>
-      <div className="flex items-center basis-[11%]">{specialization}</div>
-      <div className="flex flex-wrap items-center gap-1 max-w-[250px]">
+      <div className="hidden sm:flex items-center basis-[18%] lg:basis-[13%]">
+        {specialization}
+      </div>
+      <div className="hidden md:flex flex-wrap items-center gap-1 max-w-[250px]">
         {["Machine Learning"].map((exp) => (
           <Badge
             key={exp}
@@ -27,7 +31,7 @@ const Supervisor = ({ id, specialization, user }) => {
       </div>
       <div className="ml-auto flex gap-2 items-center">
         <Button variant="ghost" size="sm" className="h-8 text-gray-700">
-          More
+          Więcej
           <ChevronDown className="h-4 w-4 transition-transform" />
         </Button>
         <Link href={`/supervisors/${id}`}>

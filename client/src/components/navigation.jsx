@@ -1,26 +1,35 @@
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 import UserDropdown from "./user-dropdown";
 import Button from "./button";
 import CreateThesisDialog from "./create-thesis-dialog";
 
 const Navigation = () => {
   return (
-    <div className="border-b">
+    <div className="sticky top-0 border-b bg-white">
       <div className="mx-auto flex h-16 items-center max-w-6xl px-4">
-        <Link to="/" className="mr-8 text-base font-medium">
+        <NavLink to="/" className="mr-12 text-lg font-medium">
           Dyplom
-        </Link>
+        </NavLink>
         <nav className="flex items-center space-x-4 lg:space-x-6">
-          <Link to="/" className="text-sm font-medium">
-            Tematy
-          </Link>
-          <Link
-            to="/supervisors"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-          >
-            Promotorzy
-          </Link>
+          {[
+            { name: "Tematy", href: "/" },
+            { name: "Promotorzy", href: "/supervisors" },
+          ].map(({ name, href }) => (
+            <NavLink
+              key={href}
+              to={href}
+              className={({ isActive }) =>
+                `text-sm font-medium ${
+                  !isActive &&
+                  "text-muted-foreground transition-colors hover:text-primary"
+                }`
+              }
+            >
+              {name}
+            </NavLink>
+          ))}
         </nav>
+
         <div className="flex gap-x-4 ml-auto">
           <CreateThesisDialog
             trigger={<Button size="sm">Dodaj pracę</Button>}

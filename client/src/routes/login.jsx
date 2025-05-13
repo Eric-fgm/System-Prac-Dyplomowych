@@ -29,14 +29,14 @@ const LoginPage = () => {
                   <div className="flex h-8 w-8 items-center justify-center rounded-md">
                     {/* <GalleryVerticalEnd className="size-6" /> */}
                   </div>
-                  <span className="sr-only">Acme Inc.</span>
                 </a>
-                <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
+                <h1 className="text-xl font-bold">Witaj w Systemie Dyplom</h1>
                 <div className="text-center text-sm">
-                  Don&apos;t have an account?{" "}
+                  Logowanie do systemu
+                  {/* Nie masz jeszcze konta?{" "}
                   <a href="#" className="underline underline-offset-4">
                     Sign up
-                  </a>
+                  </a> */}
                 </div>
               </div>
               <div className="flex flex-col gap-6">
@@ -61,15 +61,15 @@ const LoginPage = () => {
                   />
                 </div>
                 <Button type="submit" className="w-full">
-                  Sign in with Email
+                  Zaloguj się
                 </Button>
               </div>
             </div>
           </form>
-          <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
+          {/* <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
             By clicking continue, you agree to our{" "}
             <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -9,9 +9,11 @@ const SupervisorsPage = () => {
   ) : supervisors.length ? (
     <div className="bg-white rounded-xl border overflow-hidden">
       <div className="px-4 flex h-12 items-center text-sm font-medium text-gray-500">
-        <div className="basis-[28%]">Promotor</div>
-        <div className="basis-[11%]">Kierunek</div>
-        <div>Expertise</div>
+        <div className="sm:basis-[40%] md:basis-[28%]">Promotor</div>
+        <div className="hidden sm:block basis-[18%] lg:basis-[13%]">
+          Kierunek
+        </div>
+        <div className="hidden md:block ">Tagi</div>
         <div className="ml-auto">Akcje</div>
       </div>
       {supervisors.map((supervisor) => (
