@@ -31,13 +31,40 @@ const createSupervisor = async (supervisor) => {
   }
 };
 
-export const useSupervisorsMutation = () => {
+const removeSupervisor = async (supervisor) => {
+  const response = await fetch(`${API_BASE}/supervisors/${supervisor.id}`, {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Wystąpił błąd");
+  }
+};
+
+export const useCreateSupervisorMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: createSupervisor,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["supervisors"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
+
+export const useRemoveSupervisorMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: removeSupervisor,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["supervisors"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });
 };

@@ -1,11 +1,12 @@
 import { Placeholder, Supervisor } from "../components";
+import SupervisorsSkeleton from "../components/supervisors-skeleton";
 import { useSupervisorsQuery } from "../services/supervisors";
 
 const SupervisorsPage = () => {
   const { supervisors, isLoading } = useSupervisorsQuery();
 
   return isLoading ? (
-    "Loading..."
+    <SupervisorsSkeleton />
   ) : supervisors.length ? (
     <div className="bg-white rounded-xl border overflow-hidden">
       <div className="px-4 flex h-12 items-center text-sm font-medium text-gray-500">

@@ -40,8 +40,7 @@ auth_adapter = AuthenticationBackend(
 fastapi_users = FastAPIUsers[User, int](get_user_manager, [auth_adapter])
 
 auth_router = fastapi_users.get_auth_router(auth_adapter)
-register_router = fastapi_users.get_register_router(UserRead, UserCreate)
-# users_router = fastapi_users.get_users_router(UserRead, UserUpdate)
+auth_router.include_router(fastapi_users.get_register_router(UserRead, UserCreate))
 
 @auth_router.get("/me", response_model=UserPriviligedRead)
 async def get_me(user: User = Depends(fastapi_users.current_user()), session: AsyncSession = Depends(get_session)):
