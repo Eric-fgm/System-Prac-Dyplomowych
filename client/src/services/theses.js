@@ -49,7 +49,7 @@ const reserveThesis = async (id, body) => {
 };
 
 export const useThesesQuery = (params) => {
-  const { data, ...restQuery } = useQuery({
+  const { data = [], ...restQuery } = useQuery({
     queryKey: ["theses", params],
     queryFn: () => fetchTheses(params),
   });

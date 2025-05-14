@@ -1,6 +1,7 @@
 # src/schemas.py
-from typing import Optional
+from typing import Optional, Generic, TypeVar, List
 from pydantic import BaseModel, EmailStr
+from pydantic.generics import GenericModel
 from fastapi_users import schemas
 from .models.thesis import ThesisStatus # Ensure this path is correct if schemas.py is in a different dir than models/
 
@@ -80,3 +81,14 @@ class ThesisRead(ThesisBase): # For response
 
     class Config:
         from_attributes = True
+
+# -------------------------
+#   HELPER SCHEMAS
+# -------------------------
+T = TypeVar("T")
+class Pagination(GenericModel, Generic[T]):
+    results: List[T]
+    total: int
+    page: int
+    per_page: int
+    total_pages: int

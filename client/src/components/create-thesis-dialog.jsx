@@ -5,7 +5,7 @@ import Input from "./input";
 import Textarea from "./textarea";
 import Button from "./button";
 import { useThesisCreateMutation } from "../services/theses";
-import { Calendar, FileText, Plus, X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { useAuthQuery } from "../services/auth";
 
 const CreateThesisDialog = ({ trigger }) => {
@@ -55,7 +55,6 @@ const CreateThesisDialog = ({ trigger }) => {
           {/* Thesis Title */}
           <div className="space-y-2">
             <Label htmlFor="title" className="flex items-center gap-1">
-              <FileText className="h-4 w-4" />
               Tytuł <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -116,7 +115,6 @@ const CreateThesisDialog = ({ trigger }) => {
 
             <div className="space-y-2">
               <Label htmlFor="deadline" className="flex items-center gap-1">
-                <Calendar className="h-4 w-4" />
                 Deadline <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -137,15 +135,14 @@ const CreateThesisDialog = ({ trigger }) => {
               name="description"
               placeholder="Provide a brief description of the thesis topic..."
               rows={4}
+              required
             />
           </div>
 
           {/* Tags */}
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label className="flex items-center justify-between">
-                Tagi <span className="text-red-500">*</span>
-              </Label>
+              <Label className="flex items-center justify-between">Tagi</Label>
               <Button
                 type="button"
                 variant="outline"
@@ -153,7 +150,7 @@ const CreateThesisDialog = ({ trigger }) => {
                 onClick={handleTagAdd}
               >
                 <Plus className="h-2 w-2" />
-                Add Tag
+                Dodaj tag
               </Button>
             </div>
 

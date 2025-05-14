@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/protected-route";
 import LoginPage from "./routes/Login";
 import ThesesPage from "./routes/theses";
 import SupervisorsPage from "./routes/supervisors";
+import UsersPage from "./routes/users";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <SupervisorsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/users",
+    element: (
+      <ProtectedRoute>
+        <UsersPage />
       </ProtectedRoute>
     ),
   },

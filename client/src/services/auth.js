@@ -28,10 +28,14 @@ const logout = async () => {
   }
 };
 
-const register = async () => {
+const register = async (body) => {
   const response = await fetch(`${API_BASE}/auth/register`, {
     method: "POST",
     credentials: "include",
+    body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   if (!response.ok) {
@@ -81,8 +85,13 @@ export const useLogoutMutation = () => {
 };
 
 export const useRegisterMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: register,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
   });
 };
 
