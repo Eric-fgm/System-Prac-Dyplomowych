@@ -1,6 +1,6 @@
 const SupervisorsSkeleton = () => {
   return (
-    <div className="bg-white rounded-xl border overflow-hidden">
+    <div className="mt-4 bg-white rounded-xl border overflow-hidden">
       <div className="px-4 flex h-12 items-center">
         <div className="sm:basis-[40%] md:basis-[28%]">
           <div className="w-24 h-5 bg-gray-200 rounded-sm" />

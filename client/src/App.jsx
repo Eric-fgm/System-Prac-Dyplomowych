@@ -10,6 +10,8 @@ import LoginPage from "./routes/Login";
 import ThesesPage from "./routes/theses";
 import SupervisorsPage from "./routes/supervisors";
 import UsersPage from "./routes/users";
+import SupervisorPanelPage from "./routes/supervisor-panel";
+import ReservationsPage from "./routes/reservations";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +51,22 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <UsersPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/supervisor-panel",
+    element: (
+      <ProtectedRoute>
+        <SupervisorPanelPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/reservations",
+    element: (
+      <ProtectedRoute>
+        <ReservationsPage />
       </ProtectedRoute>
     ),
   },

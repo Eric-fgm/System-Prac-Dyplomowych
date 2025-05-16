@@ -51,7 +51,7 @@ DialogContent.displayName = DialogPrimitive.Content.displayName;
 const DialogHeader = ({ className, ...props }) => (
   <div
     className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
+      "flex flex-col space-y-1.5 text-center mt-4 sm:mt-0 sm:text-left sm:pr-6",
       className
     )}
     {...props}
@@ -74,7 +74,7 @@ const DialogTitle = React.forwardRef(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
+      "text-lg font-semibold leading-tight tracking-tight",
       className
     )}
     {...props}
@@ -96,14 +96,19 @@ const Dialog = ({
   trigger,
   title,
   description,
+  closeButtonText = "Anuluj",
   buttonText,
+  size,
   onSubmit,
+  isSubmitting,
   ...props
 }) => {
   return (
     <DialogRoot {...props}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent
+        className={`${size === "lg" ? "sm:max-w-[650px]" : "sm:max-w-[500px]"}`}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
@@ -112,14 +117,17 @@ const Dialog = ({
           {children}
           <DialogFooter className="mt-4">
             <DialogClose asChild>
-              <Button variant="outline">Anuluj</Button>
+              <Button variant="outline">{closeButtonText}</Button>
             </DialogClose>
-            <Button
-              type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white"
-            >
-              {buttonText}
-            </Button>
+            {buttonText && (
+              <Button
+                type="submit"
+                className="bg-green-600 hover:bg-green-700 text-white"
+                disabled={isSubmitting}
+              >
+                {buttonText}
+              </Button>
+            )}
           </DialogFooter>
         </form>
       </DialogContent>

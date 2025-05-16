@@ -1,9 +1,10 @@
 # src/schemas.py
+from datetime import datetime
 from typing import Optional, Generic, TypeVar, List
 from pydantic import BaseModel, EmailStr
 from pydantic.generics import GenericModel
 from fastapi_users import schemas
-from .models.thesis import ThesisStatus # Ensure this path is correct if schemas.py is in a different dir than models/
+from .models.thesis import ThesisKind, ThesisStatus # Ensure this path is correct if schemas.py is in a different dir than models/
 
 # -------------------------
 #   USER SCHEMAS
@@ -58,10 +59,14 @@ class ThesisBase(BaseModel): # Renamed for clarity
     title: str
     description: str
     department: str
+    category: str
+    kind: ThesisKind
     year: int
+    deadline: Optional[datetime] = None
+    accepted_at: Optional[datetime] = None
 
 class ThesisCreate(ThesisBase):
-    status: Optional[ThesisStatus] = ThesisStatus.proposed
+    status: Optional[ThesisStatus] = ThesisStatus.available
     supervisor_id: str
 
 class ThesisUpdate(BaseModel): # Was ThesisBase, but update can be partial
@@ -81,6 +86,13 @@ class ThesisRead(ThesisBase): # For response
 
     class Config:
         from_attributes = True
+
+class ThesisReadWithApplicant(ThesisRead):
+    applicant: Optional[UserRead]
+    motivation: Optional[str]
+
+class ThesisAssign(BaseModel):
+    motivation: str
 
 # -------------------------
 #   HELPER SCHEMAS

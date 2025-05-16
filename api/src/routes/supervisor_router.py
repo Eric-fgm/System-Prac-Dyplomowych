@@ -1,9 +1,10 @@
-import uuid
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload
+from sqlalchemy import select, func
+from sqlalchemy.orm import selectinload, aliased
+from typing import Optional
 
+from ..routes.auth_router import fastapi_users
 from ..db import get_session
 from ..models.supervisor import Supervisor
 from ..models.user import User
@@ -11,17 +12,47 @@ from ..schemas import (
     SupervisorCreate,
     SupervisorRead,
     SupervisorUpdate,
+    Pagination,
 )
 
 supervisor_router = APIRouter(prefix="/supervisors", tags=["supervisors"])
 
-@supervisor_router.get("/", response_model=list[SupervisorRead])
-async def list_supervisors(session: AsyncSession = Depends(get_session)):
-    result = await session.execute(
-        select(Supervisor).options(selectinload(Supervisor.user))
-    )
-    print(result)
+@supervisor_router.get("/specializations", response_model=list[str])
+async def get_supervisors_specializations(session: AsyncSession = Depends(get_session)):
+    stmt = select(Supervisor.specialization).distinct()
+    result = await session.execute(stmt)
+
     return result.scalars().all()
+
+@supervisor_router.get("/", response_model=Pagination[SupervisorRead])
+async def list_supervisors(
+    search: Optional[str] = Query(None),
+    specialization: Optional[str] = Query(None),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(25, ge=1),
+    session: AsyncSession = Depends(get_session)
+):
+    stmt = select(User, Supervisor).outerjoin(Supervisor, User.id == Supervisor.user_id).where(Supervisor.id.isnot(None))
+    if search:
+        stmt = stmt.where(func.concat(User.first_name, " ", User.last_name).ilike(f"%{search}%"))
+    if specialization:
+        stmt = stmt.where(Supervisor.specialization == specialization)
+    
+    count_stmt = select(func.count()).select_from(stmt.subquery())
+    total_result = await session.execute(count_stmt)
+    total = total_result.scalar()
+    
+    stmt = stmt.limit(per_page).offset((page - 1) * per_page)
+    result = await session.execute(stmt)
+    supervisors = [SupervisorRead(id=supervisor.id, specialization=supervisor.specialization, user=user) for user, supervisor in result.all()]
+
+    return Pagination(
+        results=supervisors,
+        total=total,
+        page=page,
+        per_page=per_page,
+        total_pages=(total + per_page - 1) // per_page
+    )
 
 @supervisor_router.get("/{supervisor_id}", response_model=SupervisorRead)
 async def get_supervisor(

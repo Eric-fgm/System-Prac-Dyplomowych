@@ -1,7 +1,9 @@
+import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from .db import create_db_and_tables
 from .routes.auth_router import auth_router
@@ -17,6 +19,14 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+class DelayMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        await asyncio.sleep(0.2)
+        response = await call_next(request)
+        return response
+
+app.add_middleware(DelayMiddleware)
 
 app.add_middleware(
     CORSMiddleware,

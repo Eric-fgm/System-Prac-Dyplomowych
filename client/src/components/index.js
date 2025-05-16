@@ -3,6 +3,7 @@ export { default as Input } from "./input";
 export { default as Textarea } from "./textarea";
 export { default as Select } from "./select";
 export { default as Label } from "./label";
+export { default as Tabs } from "./tabs";
 export { default as Dialog } from "./dialog";
 export { default as Avatar } from "./avatar";
 export { default as Badge } from "./badge";

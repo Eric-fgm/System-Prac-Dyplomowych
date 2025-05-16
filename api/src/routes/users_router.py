@@ -1,6 +1,6 @@
 from fastapi import Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, or_
+from sqlalchemy import select, func
 from typing import Optional
 from ..models.supervisor import Supervisor
 from ..models.user import User
@@ -21,7 +21,7 @@ async def get_users(
 ):
     stmt = select(User, Supervisor).outerjoin(Supervisor, User.id == Supervisor.user_id)
     if search:
-        stmt = stmt.where(or_(User.first_name.ilike(f"%{search}%"), User.last_name.ilike(f"%{search}%")))
+        stmt = stmt.where(func.concat(User.first_name, " ", User.last_name).ilike(f"%{search}%"))
     if department:
         stmt = stmt.where(Supervisor.specialization == department)
     if role == 'students':

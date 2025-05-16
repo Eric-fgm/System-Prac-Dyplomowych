@@ -1,13 +1,29 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_BASE } from "../helpers/constants";
 
-const fetchSupervisors = async () => {
-  const response = await fetch(`${API_BASE}/supervisors`, {
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+const fetchSupervisors = async (params) => {
+  const response = await fetch(
+    `${API_BASE}/supervisors/?${new URLSearchParams({
+      page: 1,
+      ...params,
+    }).toString()}`,
+    {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Wystąpił błąd");
+  }
+
+  return await response.json();
+};
+
+const fetchSupervisorsSpecializations = async () => {
+  const response = await fetch(`${API_BASE}/supervisors/specializations`);
 
   if (!response.ok) {
     throw new Error("Wystąpił błąd");
@@ -50,9 +66,17 @@ export const useCreateSupervisorMutation = () => {
 
   return useMutation({
     mutationFn: createSupervisor,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["supervisors"] });
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["supervisors"],
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["users"],
+          refetchType: "all",
+        }),
+      ]);
     },
   });
 };
@@ -62,21 +86,31 @@ export const useRemoveSupervisorMutation = () => {
 
   return useMutation({
     mutationFn: removeSupervisor,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["supervisors"] });
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["supervisors"],
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["users"],
+          refetchType: "all",
+        }),
+      ]);
     },
   });
 };
 
-export const useSupervisorsQuery = () => {
-  const { data = [], ...restQuery } = useQuery({
-    queryKey: ["supervisors"],
-    queryFn: fetchSupervisors,
+export const useSupervisorsQuery = (params) => {
+  return useQuery({
+    queryKey: ["supervisors", params],
+    queryFn: () => fetchSupervisors(params),
   });
+};
 
-  return {
-    supervisors: data,
-    ...restQuery,
-  };
+export const useSupervisorsSpecializationsQuery = () => {
+  return useQuery({
+    queryKey: ["supervisors-specializations"],
+    queryFn: fetchSupervisorsSpecializations,
+  });
 };

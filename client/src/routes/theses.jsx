@@ -5,14 +5,18 @@ import {
   Pagination,
   ThesisSkeleton,
   Placeholder,
+  Button,
 } from "../components";
 import { useThesesQuery } from "../services/theses";
+import ReservationDialog from "../components/reservation-dialog";
+import { CheckCircle2 } from "lucide-react";
 
 export default function ThesesPage() {
   const [searchParams] = useSearchParams();
-  const { theses, isLoading } = useThesesQuery(
-    Object.fromEntries(searchParams.entries())
-  );
+  const { data, isLoading } = useThesesQuery({
+    status: "available",
+    ...Object.fromEntries(searchParams.entries()),
+  });
 
   return (
     <>
@@ -25,14 +29,33 @@ export default function ThesesPage() {
             <ThesisSkeleton />
             <ThesisSkeleton />
           </div>
-        ) : theses.length ? (
+        ) : data && data.results.length ? (
           <>
             <div className="space-y-4">
-              {theses.map((thesis) => (
-                <Thesis key={thesis.id} {...thesis} />
+              {data.results.map((thesis) => (
+                <Thesis
+                  key={thesis.id}
+                  {...thesis}
+                  actions={
+                    thesis.status === "available" && (
+                      <ReservationDialog
+                        {...thesis}
+                        trigger={
+                          <Button
+                            size="sm"
+                            className="bg-green-600 hover:bg-green-700 text-white"
+                          >
+                            <CheckCircle2 className="h-4 w-4 mr-0.5" />
+                            Rezerwuj
+                          </Button>
+                        }
+                      />
+                    )
+                  }
+                />
               ))}
             </div>
-            <Pagination className="mt-4" />
+            <Pagination totalPages={data.total_pages} className="mt-4" />
           </>
         ) : (
           <Placeholder

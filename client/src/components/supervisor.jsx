@@ -1,4 +1,4 @@
-import { ChevronDown, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Avatar from "./avatar";
 import Button from "./button";
 import Badge from "./badge";
@@ -16,27 +16,19 @@ const Supervisor = ({ id, specialization, user }) => {
           <div className="text-sm text-gray-500">{user.email}</div>
         </div>
       </div>
-      <div className="hidden sm:flex items-center basis-[18%] lg:basis-[13%]">
-        {specialization}
+      <div className="hidden sm:flex text-sm items-center basis-[18%] lg:basis-[13%]">
+        ???
       </div>
       <div className="hidden md:flex flex-wrap items-center gap-1 max-w-[250px]">
-        {["Machine Learning"].map((exp) => (
-          <Badge
-            key={exp}
-            className="bg-gray-100 text-gray-800 hover:bg-gray-200 border-none text-xs whitespace-nowrap"
-          >
-            {exp}
-          </Badge>
-        ))}
+        <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-200 border-none text-sm whitespace-nowrap">
+          {specialization}
+        </Badge>
       </div>
       <div className="ml-auto flex gap-2 items-center">
-        <Button variant="ghost" size="sm" className="h-8 text-gray-700">
-          Więcej
-          <ChevronDown className="h-4 w-4 transition-transform" />
-        </Button>
-        <Link href={`/supervisors/${id}`}>
+        <Link to={`/?supervisor_id=${id}`}>
           <Button variant="outline" size="sm" className="h-8">
             <ExternalLink className="h-4 w-4" />
+            Zobacz tematy
           </Button>
         </Link>
       </div>

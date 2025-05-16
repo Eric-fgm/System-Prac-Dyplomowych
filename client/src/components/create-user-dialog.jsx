@@ -8,7 +8,7 @@ import Button from "./button";
 
 const CreateUserDialog = ({ trigger }) => {
   const { user } = useAuthQuery();
-  const { mutateAsync } = useRegisterMutation();
+  const { mutateAsync, isPending } = useRegisterMutation();
   const [open, setOpen] = useState(false);
   const [tags, setTags] = useState([]);
 
@@ -35,6 +35,7 @@ const CreateUserDialog = ({ trigger }) => {
         description="Submit your information to reserve this thesis topic. Your supervisor will be notified."
         buttonText="Potwierdź"
         trigger={trigger}
+        isSubmitting={isPending}
         open={open}
         onOpenChange={setOpen}
         onSubmit={(e) => {

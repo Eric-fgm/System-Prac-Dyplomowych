@@ -89,8 +89,11 @@ export const useRegisterMutation = () => {
 
   return useMutation({
     mutationFn: register,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["users"],
+        refetchType: "all",
+      });
     },
   });
 };
