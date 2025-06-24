@@ -33,7 +33,7 @@ def get_jwt_strategy():
 
 auth_adapter = AuthenticationBackend(
     name="jwt",
-    transport=CookieTransport(cookie_max_age=7 * 24 * 3600, cookie_secure=False, cookie_samesite="lax"),
+    transport=CookieTransport(cookie_max_age=7 * 24 * 3600, cookie_secure=True, cookie_samesite="none"),
     get_strategy=get_jwt_strategy,
 )
 
