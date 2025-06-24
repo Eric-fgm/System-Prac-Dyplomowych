@@ -36,7 +36,7 @@ async def list_theses(
     supervisor_id: Optional[str] = Query(None),
     user_id: Optional[int] = Query(None),
     page: int = Query(1, ge=1),
-    per_page: int = Query(25, ge=1),
+    per_page: int = Query(4, ge=1),
     session: AsyncSession = Depends(get_session)
 ):
     stmt = select(Thesis).options(selectinload(Thesis.supervisor).selectinload(Supervisor.user))

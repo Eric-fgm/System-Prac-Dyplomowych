@@ -10,11 +10,13 @@ from .routes.auth_router import auth_router
 from .routes.users_router import users_router
 from .routes.thesis_router import thesis_router
 from .routes.supervisor_router import supervisor_router
-
+from .utils.seed import seed
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_db_and_tables()
+    await seed()
+
     yield
 
 

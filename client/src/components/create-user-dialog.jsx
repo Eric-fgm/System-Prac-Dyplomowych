@@ -5,6 +5,7 @@ import Label from "./label";
 import Input from "./input";
 import { Plus, Tag, X } from "lucide-react";
 import Button from "./button";
+import { DEPARTMENTS } from "../helpers/constants";
 
 const CreateUserDialog = ({ trigger }) => {
   const { user } = useAuthQuery();
@@ -32,7 +33,7 @@ const CreateUserDialog = ({ trigger }) => {
     !!user?.is_superuser && (
       <Dialog
         title="Utwórz użytkownika"
-        description="Submit your information to reserve this thesis topic. Your supervisor will be notified."
+        description="Prześlij dane użytkownika, rolę będziesz mógł zmienić później."
         buttonText="Potwierdź"
         trigger={trigger}
         isSubmitting={isPending}
@@ -125,9 +126,9 @@ const CreateUserDialog = ({ trigger }) => {
                 className="w-full px-3 py-2 border rounded-md text-sm"
                 required
               >
-                {["Informatyka"].map((dept) => (
-                  <option key={dept} value={dept}>
-                    {dept}
+                {DEPARTMENTS.map((dept) => (
+                  <option key={dept.name} value={dept.name}>
+                    {dept.name}
                   </option>
                 ))}
               </select>
